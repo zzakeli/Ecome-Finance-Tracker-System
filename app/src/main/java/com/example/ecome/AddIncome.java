@@ -1,0 +1,49 @@
+package com.example.ecome;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Button;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+
+public class AddIncome extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.add_income_page);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.add_income_page), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+        setUpButtons();
+    }
+
+    private void setUpButtons(){
+        Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v ->{
+            // Handle back button click
+            startActivity(new Intent(AddIncome.this, MainActivity.class));
+        });
+
+        Button chooseIncomeCategoryButton = findViewById(R.id.chooseIncomeCategoryButton);
+        chooseIncomeCategoryButton.setOnClickListener(v -> {
+            // Handle choose income category button click
+            loadFragment(new IncomeCategoryFragment());
+        });
+    }
+
+    private void loadFragment(Fragment fragment){
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.income_category_frame, fragment)
+                .commit();
+    }
+}

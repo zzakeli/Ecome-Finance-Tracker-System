@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/add_income_page"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/upperContainer"
+        android:layout_height="60dp"
+        android:layout_width="match_parent"
+        android:background="@color/black"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:text="BACK"/>
+
+        <TextView
+            android:id="@+id/addIncomeTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:text="New Income"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:layout_marginLeft="15dp"/>
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/incomeAmount"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:background="@color/black"
+        android:text="0"
+        android:textSize="35dp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintTop_toBottomOf="@+id/upperContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <EditText
+        android:id="@+id/incomeNote"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:hint="Notes"
+        app:layout_constraintVertical_bias="0.05"
+        app:layout_constraintTop_toBottomOf="@+id/incomeAmount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <Button
+        android:id="@+id/chooseIncomeCategoryButton"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:text="CHOOSE CATEGORY"
+        android:textSize="20dp"
+        app:layout_constraintVertical_bias="0.05"
+        app:layout_constraintTop_toBottomOf="@+id/incomeNote"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <FrameLayout
+        android:id="@+id/income_category_frame"
+        android:layout_width="match_parent"
+        android:layout_height="330dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/chooseIncomeCategoryButton"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

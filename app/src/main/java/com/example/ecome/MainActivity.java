@@ -1,9 +1,12 @@
 package com.example.ecome;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
@@ -11,7 +14,18 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
+
+    private DatabaseReference ref = Database.fireDB.getReference("users");
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +39,85 @@ public class MainActivity extends AppCompatActivity {
         });
 
         setUpUpperButtons();
+        setUpSheets();
+        setUpMainButton();
+
+        createNewUser();
+    }
+    private void createNewUser(){
+        Map<String, Object> account = new HashMap<>();
+        String[] attributes = {
+                "balance", "total_income",
+                "total_expense", "deposits",
+                "salary", "savings", "bills",
+                "food", "house", "transport",
+                "health", "clothes", "pets",
+                "eating_out", "car"
+        };
+
+        for(int i = 0; i < attributes.length; i++){
+            account.put(attributes[i], 0.00);
+        }
+
+        DatabaseReference newUserRef = ref.push();
+        userID = newUserRef.getKey();
+        newUserRef.setValue(account);
+
+        retrieveData();
+    }
+
+    private void retrieveData(){
+        ref.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Double balance = snapshot.child("balance").getValue(Double.class);
+                Double totalIncome = snapshot.child("total_income").getValue(Double.class);
+                Double totalExpense = snapshot.child("total_expense").getValue(Double.class);
+
+                TextView balanceText = findViewById(R.id.balanceText);
+                TextView totalIncomeText = findViewById(R.id.totalIncomeText);
+                TextView totalExpenseText = findViewById(R.id.totalExpenseText);
+
+                Double[] mainAttributes = {balance, totalIncome, totalExpense};
+                TextView[] textViews = {balanceText, totalIncomeText, totalExpenseText};
+                for(int i = 0; i < mainAttributes.length; i++){
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("P").append(String.format("%.2f",mainAttributes[i]));
+                    textViews[i].setText(sb.toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                error.getMessage();
+            }
+        });
+    }
+
+    private void setUpMainButton(){
+        Button expenseButton = findViewById(R.id.expenseButton);
+        expenseButton.setOnClickListener(v ->{
+            // Handle expense button click
+            startActivity(new Intent(MainActivity.this, AddExpense.class));
+        });
+
+        Button incomeButton = findViewById(R.id.incomeButton);
+        incomeButton.setOnClickListener(v ->{
+            // Handle income button click
+            startActivity(new Intent(MainActivity.this, AddIncome.class));
+        });
+    }
+
+    private void setUpSheets(){
+        Button incomeSheetButton = findViewById(R.id.incomeSheetButton);
+        incomeSheetButton.setOnClickListener(v -> {
+            new IncomeSheet().show(getSupportFragmentManager(), "IncomeSheetDialog");
+        });
+
+        Button expenseSheetButton = findViewById(R.id.expenseSheetButton);
+        expenseSheetButton.setOnClickListener(v -> {
+            new ExpenseSheet().show(getSupportFragmentManager(), "ExpenseSheetDialog");
+        });
     }
 
     private void setUpUpperButtons(){
