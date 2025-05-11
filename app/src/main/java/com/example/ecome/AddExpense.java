@@ -3,6 +3,7 @@ package com.example.ecome;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,14 +31,18 @@ public class AddExpense extends AppCompatActivity {
         Button backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v ->{
             // Handle back button click
-            startActivity(new Intent(AddExpense.this, MainActivity.class));
-            //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            finish();
         });
 
         Button chooseExpenseCategoryButton = findViewById(R.id.chooseExpenseCategoryButton);
         chooseExpenseCategoryButton.setOnClickListener(v -> {
             // Handle choose expense category button click
-            loadFragment(new ExpenseCategoryFragment());
+            ExpenseCategoryFragment fragment = new ExpenseCategoryFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("amount", getAmount());
+            fragment.setArguments(bundle);
+
+            loadFragment(fragment);
         });
     }
 
@@ -46,5 +51,10 @@ public class AddExpense extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.expense_category_frame, fragment)
                 .commit();
+    }
+
+    protected String getAmount(){
+        TextView amountText = findViewById(R.id.expenseAmount);
+        return amountText.getText().toString();
     }
 }

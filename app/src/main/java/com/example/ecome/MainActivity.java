@@ -1,7 +1,9 @@
 package com.example.ecome;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -44,6 +46,16 @@ public class MainActivity extends AppCompatActivity {
 
         createNewUser();
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        if (getIntent().getBooleanExtra("refresh", false)) {
+            retrieveData();
+        }
+    }
+
     private void createNewUser(){
         Map<String, Object> account = new HashMap<>();
         String[] attributes = {
@@ -63,10 +75,14 @@ public class MainActivity extends AppCompatActivity {
         userID = newUserRef.getKey();
         newUserRef.setValue(account);
 
+        SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        prefs.edit().putString("userID", userID).apply();
+
         retrieveData();
     }
 
-    private void retrieveData(){
+    protected void retrieveData(){
+        System.out.println(userID);
         ref.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -84,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
                     StringBuilder sb = new StringBuilder();
                     sb.append("P").append(String.format("%.2f",mainAttributes[i]));
                     textViews[i].setText(sb.toString());
+                    System.out.println(textViews[i].getText().toString());
                 }
             }
 
@@ -98,13 +115,17 @@ public class MainActivity extends AppCompatActivity {
         Button expenseButton = findViewById(R.id.expenseButton);
         expenseButton.setOnClickListener(v ->{
             // Handle expense button click
-            startActivity(new Intent(MainActivity.this, AddExpense.class));
+            Intent intent = new Intent(MainActivity.this, AddExpense.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
         });
 
         Button incomeButton = findViewById(R.id.incomeButton);
         incomeButton.setOnClickListener(v ->{
             // Handle income button click
-            startActivity(new Intent(MainActivity.this, AddIncome.class));
+            Intent intent = new Intent(MainActivity.this, AddIncome.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
         });
     }
 
@@ -132,5 +153,9 @@ public class MainActivity extends AppCompatActivity {
         moreButton.setOnClickListener(V ->{
             // Handle more button click
         });
+    }
+
+    protected String getUserID(){
+        return userID;
     }
 }

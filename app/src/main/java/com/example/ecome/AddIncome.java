@@ -3,6 +3,7 @@ package com.example.ecome;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,7 +37,12 @@ public class AddIncome extends AppCompatActivity {
         Button chooseIncomeCategoryButton = findViewById(R.id.chooseIncomeCategoryButton);
         chooseIncomeCategoryButton.setOnClickListener(v -> {
             // Handle choose income category button click
-            loadFragment(new IncomeCategoryFragment());
+            IncomeCategoryFragment fragment = new IncomeCategoryFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("amount", getAmount());
+            fragment.setArguments(bundle);
+
+            loadFragment(fragment);
         });
     }
 
@@ -45,5 +51,10 @@ public class AddIncome extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.income_category_frame, fragment)
                 .commit();
+    }
+
+    protected String getAmount(){
+        TextView amountText = findViewById(R.id.incomeAmount);
+        return amountText.getText().toString();
     }
 }
