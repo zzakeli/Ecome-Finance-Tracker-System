@@ -31,7 +31,7 @@ public class AddIncome extends AppCompatActivity {
         Button backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v ->{
             // Handle back button click
-            startActivity(new Intent(AddIncome.this, MainActivity.class));
+            finish();
         });
 
         Button chooseIncomeCategoryButton = findViewById(R.id.chooseIncomeCategoryButton);

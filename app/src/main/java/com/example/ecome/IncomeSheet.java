@@ -1,17 +1,38 @@
 package com.example.ecome;
 
 import android.app.Dialog;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+
 public class IncomeSheet extends DialogFragment {
+
+    private DatabaseReference ref = Database.fireDB.getReference("users");
+    private LinearLayout incomeSheetContainer;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        return inflater.inflate(R.layout.income_sheet, container, false);
+        View view = inflater.inflate(R.layout.income_sheet, container, false);
+
+        incomeSheetContainer = view.findViewById(R.id.incomeSheetContainer);
+        loadIncomeRecord();
+
+        return view;
     }
 
     @Override
@@ -25,4 +46,97 @@ public class IncomeSheet extends DialogFragment {
             incomeSheetDialog.getWindow().setLayout(width, height);
         }
     }
+
+    private void loadIncomeRecord(){
+        SharedPreferences prefs = getActivity().getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
+        String userID = prefs.getString("userID", null);
+
+        ref.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String[] incomeCategory = {"deposits", "salary", "savings"};
+                 for(int i = 0; i < incomeCategory.length; i++){
+                     Double categoryValue = snapshot.child(incomeCategory[i]).getValue(Double.class);
+                     if(categoryValue != 0.00 && categoryValue != null){
+                         LinearLayout record = getRecord();
+                         record.addView(getCategoryLabel(incomeCategory[i]));
+                         record.addView(getCategoryAmount(categoryValue));
+                         incomeSheetContainer.addView(record);
+                     }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                error.getMessage();
+            }
+        });
+    }
+
+    private TextView getCategoryLabel(String incomeCategory) {
+        TextView categoryLabel = new TextView(getContext());
+
+        categoryLabel.setText(Character.toString(incomeCategory.charAt(0)).toUpperCase() + incomeCategory.substring(1, incomeCategory.length()));
+
+        int widthInDp = 210;
+        float scale = getResources().getDisplayMetrics().density;
+        int widthInPx = (int) (widthInDp * scale + 0.5f);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(widthInPx,ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        params.gravity = Gravity.CENTER_VERTICAL;
+        int marginInDp = 10;
+        int marginInPx = (int) (marginInDp * scale + 0.5f);
+        params.setMargins(marginInPx,0,0,0);
+
+        categoryLabel.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
+        categoryLabel.setTextColor(Color.parseColor("#FFFFFFFF"));
+
+        categoryLabel.setLayoutParams(params);
+        return categoryLabel;
+    }
+
+
+    private TextView getCategoryAmount(Double categoryValue) {
+        TextView categoryAmount = new TextView(getContext());
+
+        categoryAmount.setText("P" + Double.toString(categoryValue));
+
+        categoryAmount.setGravity(Gravity.END);
+        categoryAmount.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
+        categoryAmount.setTextColor(Color.parseColor("#FFFFFFFF"));
+
+        int heightInDp = 30;
+        int widthInDp = 100;
+        float scale = getResources().getDisplayMetrics().density;
+        int heightInPx = (int) (heightInDp * scale + 0.5f);
+        int widthInPx = (int) (widthInDp * scale + 0.5f);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(widthInPx,heightInPx);
+        params.gravity = Gravity.CENTER_VERTICAL;
+
+        categoryAmount.setLayoutParams(params);
+        return categoryAmount;
+    }
+    private LinearLayout getRecord() {
+        LinearLayout record = new LinearLayout(getContext());
+
+        // STANDARD SIZING CONVERSION FROM DP TO PX
+        int heightInDp = 50;
+        float scale = getResources().getDisplayMetrics().density;
+        int heightInPx = (int) (heightInDp * scale + 0.5f);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, heightInPx);
+
+        int marginInDp = 10;
+        int marginInPx = (int) (marginInDp * scale + 0.5f);
+        params.setMargins(0,0,0,marginInPx);
+
+        record.setBackgroundColor(Color.parseColor("#FF000000"));
+        record.setOrientation(LinearLayout.HORIZONTAL);
+
+        record.setLayoutParams(params);
+        return record;
+    }
+
 }

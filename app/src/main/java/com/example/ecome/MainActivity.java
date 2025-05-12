@@ -132,11 +132,13 @@ public class MainActivity extends AppCompatActivity {
     private void setUpSheets(){
         Button incomeSheetButton = findViewById(R.id.incomeSheetButton);
         incomeSheetButton.setOnClickListener(v -> {
+            // Handles the recycle view from database
             new IncomeSheet().show(getSupportFragmentManager(), "IncomeSheetDialog");
         });
 
         Button expenseSheetButton = findViewById(R.id.expenseSheetButton);
         expenseSheetButton.setOnClickListener(v -> {
+            // Handles the recycle view from database
             new ExpenseSheet().show(getSupportFragmentManager(), "ExpenseSheetDialog");
         });
     }

@@ -17,55 +17,55 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
-        <LinearLayout
-            android:id="@+id/salaryContainer"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@color/black"
-            android:layout_marginBottom="10dp">
-            <TextView
-                android:id="@+id/salaryLabel"
-                android:layout_width="210dp"
-                android:layout_height="wrap_content"
-                android:text="Salary"
-                android:textSize="25dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp" />
+<!--        <LinearLayout-->
+<!--            android:id="@+id/salaryContainer"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:background="@color/black"-->
+<!--            android:layout_marginBottom="10dp">-->
+<!--            <TextView-->
+<!--                android:id="@+id/salaryLabel"-->
+<!--                android:layout_width="210dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Salary"-->
+<!--                android:textSize="25dp"-->
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:layout_marginLeft="10dp" />-->
 
-            <TextView
-                android:id="@+id/salaryAmount"
-                android:layout_width="100dp"
-                android:layout_height="30dp"
-                android:text="P15,000.00"
-                android:textSize="20dp"
-                android:gravity="end"
-                android:layout_gravity="center_vertical" />
-        </LinearLayout>
+<!--            <TextView-->
+<!--                android:id="@+id/salaryAmount"-->
+<!--                android:layout_width="100dp"-->
+<!--                android:layout_height="30dp"-->
+<!--                android:text="P15,000.00"-->
+<!--                android:textSize="20dp"-->
+<!--                android:gravity="end"-->
+<!--                android:layout_gravity="center_vertical" />-->
+<!--        </LinearLayout>-->
 
-        <LinearLayout
-            android:id="@+id/savingsContainer"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@color/black"
-            android:layout_marginBottom="10dp">
-            <TextView
-                android:id="@+id/savingsLabel"
-                android:layout_width="210dp"
-                android:layout_height="wrap_content"
-                android:text="Savings"
-                android:textSize="25dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp" />
+<!--        <LinearLayout-->
+<!--            android:id="@+id/savingsContainer"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:background="@color/black"-->
+<!--            android:layout_marginBottom="10dp">-->
+<!--            <TextView-->
+<!--                android:id="@+id/savingsLabel"-->
+<!--                android:layout_width="210dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Savings"-->
+<!--                android:textSize="25dp"-->
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:layout_marginLeft="10dp" />-->
 
-            <TextView
-                android:id="@+id/savingsAmount"
-                android:layout_width="100dp"
-                android:layout_height="30dp"
-                android:text="P5,000.00"
-                android:textSize="20dp"
-                android:gravity="end"
-                android:layout_gravity="center_vertical" />
-        </LinearLayout>
+<!--            <TextView-->
+<!--                android:id="@+id/savingsAmount"-->
+<!--                android:layout_width="100dp"-->
+<!--                android:layout_height="30dp"-->
+<!--                android:text="P5,000.00"-->
+<!--                android:textSize="20dp"-->
+<!--                android:gravity="end"-->
+<!--                android:layout_gravity="center_vertical" />-->
+<!--        </LinearLayout>-->
     </LinearLayout>
 
 
