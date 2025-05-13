@@ -3,6 +3,7 @@ package com.example.ecome;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -28,7 +29,7 @@ public class AddExpense extends AppCompatActivity {
     }
 
     private void setUpButtons(){
-        Button backButton = findViewById(R.id.backButton);
+        ImageButton backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v ->{
             // Handle back button click
             finish();

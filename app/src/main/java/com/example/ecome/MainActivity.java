@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -130,13 +131,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUpSheets(){
-        Button incomeSheetButton = findViewById(R.id.incomeSheetButton);
+        ImageButton incomeSheetButton = findViewById(R.id.incomeSheetButton);
         incomeSheetButton.setOnClickListener(v -> {
             // Handles the recycle view from database
             new IncomeSheet().show(getSupportFragmentManager(), "IncomeSheetDialog");
         });
 
-        Button expenseSheetButton = findViewById(R.id.expenseSheetButton);
+        ImageButton expenseSheetButton = findViewById(R.id.expenseSheetButton);
         expenseSheetButton.setOnClickListener(v -> {
             // Handles the recycle view from database
             new ExpenseSheet().show(getSupportFragmentManager(), "ExpenseSheetDialog");
@@ -145,13 +146,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpUpperButtons(){
         DrawerLayout drawerLayout = findViewById(R.id.date_drawer);
-        Button burgerButton = findViewById(R.id.burgerButton);
+        ImageButton burgerButton = findViewById(R.id.burgerButton);
         burgerButton.setOnClickListener(v -> {
             // Handle burger button click
             drawerLayout.openDrawer(GravityCompat.START);
         });
 
-        Button moreButton = findViewById(R.id.moreButton);
+        ImageButton moreButton = findViewById(R.id.moreButton);
         moreButton.setOnClickListener(V ->{
             // Handle more button click
         });

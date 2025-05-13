@@ -16,27 +16,41 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0.1">
-        <Button
+        <ImageButton
             android:id="@+id/depositsCategory"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:text="Deposits"
-            android:textSize="11sp"/>
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/income_category_button"
+            android:padding="25dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/deposits"
+            android:textSize="14sp"
+            tools:ignore="SpeakableTextPresentCheck" />
 
-        <Button
+        <ImageButton
             android:id="@+id/salaryCategory"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:text="Salary"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:textSize="11sp"/>
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/income_category_button"
+            android:padding="25dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/salary"
+            tools:ignore="SpeakableTextPresentCheck" />
 
-        <Button
+        <ImageButton
             android:id="@+id/savingsCategory"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:text="Savings"
-            android:textSize="11sp"/>
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/income_category_button"
+            android:padding="25dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/savings"
+            tools:ignore="SpeakableTextPresentCheck" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

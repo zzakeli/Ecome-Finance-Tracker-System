@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,55 +37,55 @@ public class ExpenseCategoryFragment extends Fragment {
 
         String amount = getArguments().getString("amount");
 
-        Button billsCategoryButton = view.findViewById(R.id.billsCategory);
+        ImageButton billsCategoryButton = view.findViewById(R.id.billsCategory);
         billsCategoryButton.setOnClickListener(v -> {
             String category = "bills";
             addExpense(category, amount);
         });
 
-        Button foodCategoryButton = view.findViewById(R.id.foodCategory);
+        ImageButton foodCategoryButton = view.findViewById(R.id.foodCategory);
         foodCategoryButton.setOnClickListener(v -> {
             String category = "food";
             addExpense(category, amount);
         });
 
-        Button houseCategoryButton = view.findViewById(R.id.houseCategory);
+        ImageButton houseCategoryButton = view.findViewById(R.id.houseCategory);
         houseCategoryButton.setOnClickListener(v -> {
             String category = "house";
             addExpense(category, amount);
         });
 
-        Button transportCategoryButton = view.findViewById(R.id.transportCategory);
+        ImageButton transportCategoryButton = view.findViewById(R.id.transportCategory);
         transportCategoryButton.setOnClickListener(v -> {
             String category = "transport";
             addExpense(category, amount);
         });
 
-        Button healthCategoryButton = view.findViewById(R.id.healthCategory);
+        ImageButton healthCategoryButton = view.findViewById(R.id.healthCategory);
         healthCategoryButton.setOnClickListener(v -> {
             String category = "health";
             addExpense(category, amount);
         });
 
-        Button clothesCategoryButton = view.findViewById(R.id.clothesCategory);
+        ImageButton clothesCategoryButton = view.findViewById(R.id.clothesCategory);
         clothesCategoryButton.setOnClickListener(v -> {
             String category = "clothes";
             addExpense(category, amount);
         });
 
-        Button petsCategoryButton = view.findViewById(R.id.petsCategory);
+        ImageButton petsCategoryButton = view.findViewById(R.id.petsCategory);
         petsCategoryButton.setOnClickListener(v -> {
             String category = "pets";
             addExpense(category, amount);
         });
 
-        Button eatingOutCategoryButton = view.findViewById(R.id.eatingOutCategory);
+        ImageButton eatingOutCategoryButton = view.findViewById(R.id.eatingOutCategory);
         eatingOutCategoryButton.setOnClickListener(v -> {
             String category = "eating_out";
             addExpense(category, amount);
         });
 
-        Button carCategoryButton = view.findViewById(R.id.carCategory);
+        ImageButton carCategoryButton = view.findViewById(R.id.carCategory);
         carCategoryButton.setOnClickListener(v -> {
             String category = "car";
             addExpense(category, amount);

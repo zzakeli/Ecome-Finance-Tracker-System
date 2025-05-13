@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -35,19 +36,19 @@ public class IncomeCategoryFragment extends Fragment {
 
         String amount = getArguments().getString("amount");
 
-        Button depositsCategoryButton = view.findViewById(R.id.depositsCategory);
+        ImageButton depositsCategoryButton = view.findViewById(R.id.depositsCategory);
         depositsCategoryButton.setOnClickListener(v -> {
             String category = "deposits";
             addIncome(category, amount);
         });
 
-        Button salaryCategoryButton = view.findViewById(R.id.salaryCategory);
+        ImageButton salaryCategoryButton = view.findViewById(R.id.salaryCategory);
         salaryCategoryButton.setOnClickListener(v -> {
             String category = "salary";
             addIncome(category, amount);
         });
 
-        Button savingsCategoryButton = view.findViewById(R.id.savingsCategory);
+        ImageButton savingsCategoryButton = view.findViewById(R.id.savingsCategory);
         savingsCategoryButton.setOnClickListener(v -> {
             String category = "savings";
             addIncome(category, amount);
