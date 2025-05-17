@@ -8,7 +8,8 @@
         android:title="Week" />
     <item
         android:id="@+id/navMonth"
-        android:title="Month" />
+        android:title="Month"
+        />
     <item
         android:id="@+id/navYear"
         android:title="Year" />

@@ -51,18 +51,6 @@
                 android:fontFamily="@font/ecome_font"
                 android:layout_marginLeft="15dp"/>
 
-            <ImageButton
-                android:id="@+id/moreButton"
-                android:layout_width="50dp"
-                android:layout_height="30sp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="60dp"
-                android:background="@android:color/transparent"
-                android:backgroundTint="@android:color/transparent"
-                android:scaleType="fitCenter"
-                android:src="@drawable/more"
-                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
         </LinearLayout>
 
         <LinearLayout

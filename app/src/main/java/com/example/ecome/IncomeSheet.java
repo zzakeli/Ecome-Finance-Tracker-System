@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -14,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.firebase.database.DataSnapshot;
@@ -132,7 +134,8 @@ public class IncomeSheet extends DialogFragment {
         int marginInPx = (int) (marginInDp * scale + 0.5f);
         params.setMargins(0,0,0,marginInPx);
 
-        record.setBackgroundColor(Color.parseColor("#FF000000"));
+        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.choose_category_green);
+        record.setBackground(drawable);
         record.setOrientation(LinearLayout.HORIZONTAL);
 
         record.setLayoutParams(params);

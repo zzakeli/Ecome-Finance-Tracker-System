@@ -1,12 +1,21 @@
 package com.example.ecome;
 
+import android.net.Uri;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -22,7 +31,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -44,9 +59,11 @@ public class MainActivity extends AppCompatActivity {
         setUpUpperButtons();
         setUpSheets();
         setUpMainButton();
+        setUpMidButton();
 
         createNewUser();
     }
+
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -55,6 +72,10 @@ public class MainActivity extends AppCompatActivity {
         if (getIntent().getBooleanExtra("refresh", false)) {
             retrieveData();
         }
+    }
+
+    interface OnDataReadyCallback {
+        void onDataReady(List<String[]> data);
     }
 
     private void createNewUser(){
@@ -151,11 +172,124 @@ public class MainActivity extends AppCompatActivity {
             // Handle burger button click
             drawerLayout.openDrawer(GravityCompat.START);
         });
+    }
 
-        ImageButton moreButton = findViewById(R.id.moreButton);
-        moreButton.setOnClickListener(V ->{
-            // Handle more button click
+    private void setUpMidButton(){
+        ImageButton chartButton = findViewById(R.id.chartButton);
+        chartButton.setOnClickListener(v -> {
+            // Handle chart button click
+            showChart();
         });
+
+        ImageButton exportButton = findViewById(R.id.exportButton);
+        exportButton.setOnClickListener(v -> {
+           getData(data -> exportData(this, data));
+        });
+    }
+
+    private void showChart(){
+        //SHOWS CHART
+    }
+    
+    private  void getData(OnDataReadyCallback callback){
+        List<String[]> data = new ArrayList<>();
+
+        ref.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //GENERAL BALANCE
+                Double balance = snapshot.child("balance").getValue(Double.class);
+                Double totalIncome = snapshot.child("total_income").getValue(Double.class);
+                Double totalExpense = snapshot.child("total_expense").getValue(Double.class);
+
+                //INCOME
+                Double deposits = snapshot.child("deposits").getValue(Double.class);
+                Double salary = snapshot.child("salary").getValue(Double.class);
+                Double savings = snapshot.child("savings").getValue(Double.class);
+
+                //EXPENSE
+                Double bills = snapshot.child("bills").getValue(Double.class);
+                Double food = snapshot.child("food").getValue(Double.class);
+                Double house = snapshot.child("house").getValue(Double.class);
+                Double transport = snapshot.child("transport").getValue(Double.class);
+                Double health = snapshot.child("health").getValue(Double.class);
+                Double clothes = snapshot.child("clothes").getValue(Double.class);
+                Double pets = snapshot.child("pets").getValue(Double.class);
+                Double eatingOut = snapshot.child("eating_out").getValue(Double.class);
+
+                String[] attributes = {
+                        "balance", "total_income", "total_expense",
+                        "deposits", "salary", "savings", "bills",
+                        "food", "house", "transport", "health",
+                        "clothes", "pets", "eating_out"
+                };
+                Double[] values = {
+                        balance, totalIncome, totalExpense,
+                        deposits, salary, savings, bills,
+                        food, house, transport, health,
+                        clothes, pets, eatingOut
+                };
+
+                String[] valuesString = new String[values.length];
+
+                for(int i = 0; i < values.length; i++){
+                    valuesString[i] =  values[i].toString();
+                }
+
+                data.add(attributes);
+                data.add(valuesString);
+
+                callback.onDataReady(data);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                error.getMessage();
+            }
+        });
+    }
+
+    private void exportData(Context context, List<String[]> data){
+        StringBuilder csvBuilder = new StringBuilder();
+        for (String[] row : data) {
+            csvBuilder.append(TextUtils.join(",", row));
+            csvBuilder.append("\n");
+        }
+
+        try {
+            String fileName = "finance_data.csv";
+
+            // Save to Downloads folder (scoped storage - Android 10+)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Downloads.DISPLAY_NAME, fileName);
+                values.put(MediaStore.Downloads.MIME_TYPE, "text/csv");
+                values.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
+
+                ContentResolver resolver = context.getContentResolver();
+                Uri uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
+
+                if (uri != null) {
+                    try (OutputStream outputStream = resolver.openOutputStream(uri)) {
+                        outputStream.write(csvBuilder.toString().getBytes());
+                        Toast.makeText(context, "CSV exported to Downloads", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            } else {
+                // For older versions
+                File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                File file = new File(dir, fileName);
+
+                try (FileOutputStream fos = new FileOutputStream(file)) {
+                    fos.write(csvBuilder.toString().getBytes());
+                    Toast.makeText(context, "CSV exported to " + file.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(context, "Export failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     protected String getUserID(){
