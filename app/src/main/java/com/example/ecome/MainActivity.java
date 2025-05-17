@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -26,6 +25,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -178,7 +183,10 @@ public class MainActivity extends AppCompatActivity {
         ImageButton chartButton = findViewById(R.id.chartButton);
         chartButton.setOnClickListener(v -> {
             // Handle chart button click
-            showChart();
+//            showChart();
+            Intent intent = new Intent(MainActivity.this, Chart.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
         });
 
         ImageButton exportButton = findViewById(R.id.exportButton);
@@ -189,6 +197,76 @@ public class MainActivity extends AppCompatActivity {
 
     private void showChart(){
         //SHOWS CHART
+        ref.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //GENERAL BALANCE
+//                Double balance = snapshot.child("balance").getValue(Double.class);
+//                Double totalIncome = snapshot.child("total_income").getValue(Double.class);
+//                Double totalExpense = snapshot.child("total_expense").getValue(Double.class);
+
+                //INCOME
+                Double deposits = snapshot.child("deposits").getValue(Double.class);
+                Double salary = snapshot.child("salary").getValue(Double.class);
+                Double savings = snapshot.child("savings").getValue(Double.class);
+
+                //EXPENSE
+                Double bills = snapshot.child("bills").getValue(Double.class);
+                Double food = snapshot.child("food").getValue(Double.class);
+                Double house = snapshot.child("house").getValue(Double.class);
+                Double transport = snapshot.child("transport").getValue(Double.class);
+                Double health = snapshot.child("health").getValue(Double.class);
+                Double clothes = snapshot.child("clothes").getValue(Double.class);
+                Double pets = snapshot.child("pets").getValue(Double.class);
+                Double eatingOut = snapshot.child("eating_out").getValue(Double.class);
+
+                //CREATING BAR CHART
+                String[] attributes = {
+                        "deposits", "salary", "savings", "bills",
+                        "food", "house", "transport", "health",
+                        "clothes", "pets", "eating_out"
+                };
+
+                ArrayList<BarEntry> entries = new ArrayList<>();
+                Double[] values = {
+                        deposits, salary, savings, bills,
+                        food, house, transport, health,
+                        clothes, pets, eatingOut
+                };
+
+                BarChart barChart = findViewById(R.id.barChart);
+                Float[] valuesFloat = new Float[values.length];
+
+                for(int i = 0; i < values.length; i++){
+                    valuesFloat[i] = values[i].floatValue();
+                }
+
+                for(int i = 0; i < valuesFloat.length; i++){
+                    entries.add(new BarEntry((float) i, valuesFloat[i]));
+                }
+
+                XAxis xAxis = barChart.getXAxis();
+                xAxis.setGranularity(1f);
+                xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                xAxis.setValueFormatter(new IndexAxisValueFormatter(attributes));
+
+                BarDataSet set = new BarDataSet(entries, "Cash Flow");
+
+                BarData barData = new BarData(set);
+                barData.setBarWidth(0.9f);
+
+                barChart.setData(barData);
+                barChart.setFitBars(true);
+                barChart.getDescription().setText("Cash Flow");
+                barChart.animateY(1000);
+//              barchart.invalidate();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                error.getMessage();
+            }
+        });
     }
     
     private  void getData(OnDataReadyCallback callback){
